@@ -4,6 +4,11 @@
 
 @layer base {
   :root {
+    --primary-color: #000000;
+    --secondary-color: #ffffff;
+    --font-size-base: 1rem;
+    --spacing-base: 1rem;
+    /* Demo */
     --background: 0 0% 100%;
     --foreground: 0 0% 3.9%;
     --card: 0 0% 100%;
@@ -55,13 +60,5 @@
     --chart-3: 30 80% 55%;
     --chart-4: 280 65% 60%;
     --chart-5: 340 75% 55%;
-  }
-}
-@layer base {
-  * {
-    @apply border-border;
-  }
-  body {
-    @apply bg-background text-foreground;
   }
 }
