@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { Star, ShoppingCart } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { LoadingSpinner } from "@/components/loading-spinner";
+import Image from "next/image";
 
 export default function Home() {
   const [selectedCategory, setSelectedCategory] = useState("All");
@@ -94,7 +95,7 @@ export default function Home() {
                       key={product.product_id}
                       className="bg-white overflow-hidden shadow rounded-lg"
                     >
-                      <img
+                      <Image width={100} height={100}
                         className="h-48 w-full object-cover"
                         src={
                           product.attachment[0]?.file_path ||

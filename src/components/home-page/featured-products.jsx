@@ -1,5 +1,6 @@
 import { Star } from "lucide-react";
 import { Button } from "../ui/button";
+import Image from "next/image";
 
 export default function FeaturedProducts() {
   return (      
@@ -7,7 +8,7 @@ export default function FeaturedProducts() {
       <div className="px-4 py-6 sm:px-0">      
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">      
           <div className="bg-white overflow-hidden shadow rounded-lg">      
-            <img className="h-48 w-full object-cover" src="https://via.placeholder.com/200" alt="Product Name" />      
+            <Image className="h-48 w-full object-cover" src="https://via.placeholder.com/200" alt="Product Name" width={100} height={100}/>      
             <div className="p-4">      
               <h3 className="text-lg font-semibold text-gray-900">Product Name</h3>      
               <p className="mt-1 text-gray-600">₹100</p>      
@@ -20,7 +21,7 @@ export default function FeaturedProducts() {
             </div>      
           </div>      
           <div className="bg-white overflow-hidden shadow rounded-lg">      
-            <img className="h-48 w-full object-cover" src="https://via.placeholder.com/200" alt="Product Name" />      
+            <Image  className="h-48 w-full object-cover" src="https://via.placeholder.com/200" alt="Product Name" width={100} height={100} />      
             <div className="p-4">      
               <h3 className="text-lg font-semibold text-gray-900">Product Name</h3>      
               <p className="mt-1 text-gray-600">₹100</p>      
@@ -33,7 +34,7 @@ export default function FeaturedProducts() {
             </div>      
           </div>      
           <div className="bg-white overflow-hidden shadow rounded-lg">      
-            <img className="h-48 w-full object-cover" src="https://via.placeholder.com/200" alt="Product Name" />      
+            <Image  className="h-48 w-full object-cover" src="https://via.placeholder.com/200" alt="Product Name" width={100} height={100}/>      
             <div className="p-4">      
               <h3 className="text-lg font-semibold text-gray-900">Product Name</h3>      
               <p className="mt-1 text-gray-600">₹100</p>      
@@ -46,7 +47,7 @@ export default function FeaturedProducts() {
             </div>      
           </div>      
           <div className="bg-white overflow-hidden shadow rounded-lg">      
-            <img className="h-48 w-full object-cover" src="https://via.placeholder.com/200" alt="Product Name" />      
+            <Image  className="h-48 w-full object-cover" src="https://via.placeholder.com/200" alt="Product Name" width={100} height={100}/>      
             <div className="p-4">      
               <h3 className="text-lg font-semibold text-gray-900">Product Name</h3>      
               <p className="mt-1 text-gray-600">₹100</p>      

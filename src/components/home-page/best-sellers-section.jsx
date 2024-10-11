@@ -1,5 +1,6 @@
 import React from "react";
 import { Star, Heart, ChevronLeft, ChevronRight } from "lucide-react";
+import Image from "next/image";
 
 const products = [
   {
@@ -98,7 +99,9 @@ const BestSellersSection = () => {
         {products.map((product) => (
           <div key={product.id} className="bg-gray-100 p-4 rounded-lg">
             <div className="relative">
-              <img
+              <Image
+                width={100}
+                height={100}
                 src={product.image}
                 alt={product.name}
                 className="w-full h-48 object-cover mb-2"
