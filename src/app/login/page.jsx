@@ -96,7 +96,7 @@ const LoginPage = () => {
                   </div>
                   <div className="relative flex justify-center text-sm">
                     <span className="px-2 bg-white text-gray-500">
-                      "Didn't registered yet?"
+                      Didn&apos;t registered yet?
                       <a
                         href="#"
                         className="font-medium text-blue-600 hover:text-blue-500"
