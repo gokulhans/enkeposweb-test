@@ -32,7 +32,7 @@ export default function Home() {
         console.error("Error fetching data:", error);
       } finally {
         setLoading(false); // End loading
-      }
+      } 
     };
 
     fetchData();
@@ -95,7 +95,9 @@ export default function Home() {
                       key={product.product_id}
                       className="bg-white overflow-hidden shadow rounded-lg"
                     >
-                      <Image width={100} height={100}
+                      <Image
+                        width={100}
+                        height={100}
                         className="h-48 w-full object-cover"
                         src={
                           product.attachment[0]?.file_path ||

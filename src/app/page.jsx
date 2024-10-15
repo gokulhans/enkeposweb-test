@@ -3,14 +3,19 @@ import BestSellersSection from "@/components/home-page/best-sellers-section";
 import RecentProductsSection from "@/components/home-page/recent-products-section";
 import TopCategoriesSection from "@/components/home-page/top-category-section";
 import { Fragment } from "react";
+import { fetchCategories, fetchProducts } from "./services/api";
 
-export default function Page() {
+export default async function Page() {
+  const categories = await fetchCategories();
+  const products = await fetchProducts();
   return (
     <Fragment>
-      <TopCategoriesSection />
-      <BestOffersSection />
-      <RecentProductsSection />
-      <BestSellersSection />
+      <div className="md:px-16">
+        <TopCategoriesSection categories={categories} />
+        <BestOffersSection />
+        <RecentProductsSection products={products} />
+        <BestSellersSection products={products}/>
+      </div>
     </Fragment>
   );
 }

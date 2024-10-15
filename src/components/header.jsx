@@ -7,8 +7,11 @@ import {
   Search,
   Phone,
 } from "lucide-react";
+import { fetchCategories } from "@/app/services/api";
 
-const Navbar = () => {
+const Navbar = async () => {
+  const categories = await fetchCategories();
+
   return (
     <nav className="bg-white shadow-md">
       {/* Top bar */}
@@ -52,6 +55,11 @@ const Navbar = () => {
             <div className="relative w-1/3">
               <select className="appearance-none bg-gray-100 border-t border-b border-gray-300 text-gray-700 py-2 px-4 pr-8 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 w-full">
                 <option>Select Category</option>
+                {categories.map((cat) => (
+                  <option key={cat.category_id} value={cat.category_slug}>
+                    {cat.category_name}
+                  </option>
+                ))}
               </select>
               <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
                 <ChevronDown size={20} />
