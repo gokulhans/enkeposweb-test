@@ -77,7 +77,7 @@ const BestSellersSection = ({ products }) => {
         ))}
       </div>
 
-      <div className="flex justify-center mt-12">
+      {/* <div className="flex justify-center mt-12">
         <button className="mx-1 px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-100">
           <ChevronLeft size={16} />
         </button>
@@ -94,7 +94,7 @@ const BestSellersSection = ({ products }) => {
         <button className="mx-1 px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-100">
           <ChevronRight size={16} />
         </button>
-      </div>
+      </div> */}
     </div>
   );
 };
