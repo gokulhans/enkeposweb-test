@@ -14,7 +14,10 @@ const BestSellersSection = ({ products }) => {
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
         {products.map((product) => (
-          <div key={product.product_id} className="bg-white shadow-md p-6 rounded-lg transition-transform transform hover:scale-105">
+          <div
+            key={product.product_id}
+            className="bg-white shadow-md p-6 rounded-lg transition-transform transform hover:scale-105"
+          >
             <div className="relative mb-4">
               <Image
                 width={100}
@@ -36,7 +39,9 @@ const BestSellersSection = ({ products }) => {
                 />
               ))}
             </div>
-            <h3 className="font-semibold text-lg mb-2 truncate">{product.names.en}</h3>
+            <h3 className="font-semibold text-lg mb-2 truncate">
+              {product.names.en}
+            </h3>
             <p
               className={`text-sm ${
                 product.number_of_products_availble
@@ -50,11 +55,19 @@ const BestSellersSection = ({ products }) => {
             </p>
             <div className="flex justify-between items-center mb-4">
               <div className="flex items-center">
-                <button className="border border-gray-300 rounded-l px-3 py-1 hover:bg-gray-100">-</button>
-                <span className="border-t border-b border-gray-300 px-3 py-1">1</span>
-                <button className="border border-gray-300 rounded-r px-3 py-1 hover:bg-gray-100">+</button>
+                <button className="border border-gray-300 rounded-l px-3 py-1 hover:bg-gray-100">
+                  -
+                </button>
+                <span className="border-t border-b border-gray-300 px-3 py-1">
+                  1
+                </span>
+                <button className="border border-gray-300 rounded-r px-3 py-1 hover:bg-gray-100">
+                  +
+                </button>
               </div>
-              <p className="font-bold text-lg">{product.price.price.toFixed(2)} ₹</p>
+              <p className="font-bold text-lg">
+                {product.price.price.toFixed(2)} ₹
+              </p>
             </div>
             <button className="w-full bg-pink-500 text-white py-2 rounded-lg flex items-center justify-center hover:bg-pink-600">
               <Heart size={16} className="mr-2" />

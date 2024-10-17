@@ -4,6 +4,7 @@ import RecentProductsSection from "@/components/home-page/recent-products-sectio
 import TopCategoriesSection from "@/components/home-page/top-category-section";
 import { Fragment } from "react";
 import { fetchCategories, fetchProducts } from "./services/api";
+import BannersSection from "@/components/home-page/banners-section";
 
 export default async function Page() {
   const categories = await fetchCategories();
@@ -12,9 +13,10 @@ export default async function Page() {
     <Fragment>
       <div className="md:px-16">
         <TopCategoriesSection categories={categories} />
+        <BannersSection />
         <BestOffersSection />
         <RecentProductsSection products={products} />
-        <BestSellersSection products={products}/>
+        <BestSellersSection products={products} />
       </div>
     </Fragment>
   );

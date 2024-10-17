@@ -9,3 +9,8 @@ export const fetchProducts = async () => {
   const data = await response.json();
   return data.product;
 };
+
+export const fetchProductById = async (productId) => {
+  const products = await fetchProducts();
+  return products.find((product) => product.product_id === productId);
+};

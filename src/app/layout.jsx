@@ -1,12 +1,13 @@
 import { Inter } from "next/font/google";
 import "./globals.css";
-import Header from "../components/header";
-import Footer from "../components/footer";
+import Header from "../components/header/header";
+import Footer from "../components/footer/footer";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
-  title: "ENKE Consulting Services LLP",
+  // title: "ENKE Consulting Services LLP",
+  title: "Epos Home",
   description:
     "Providing Web/Mobile Application Services Across The World Based In INDIA, Get IT Consulting For Free From The Industry experts With Adaptive, Robust, Scalable Solutions for  Business..",
   icons: {
