@@ -10,12 +10,14 @@ export default async function Page() {
   const categories = await fetchCategories();
   const products = await fetchProducts();
   return (
-    <Fragment className="md:px-16">
-      <TopCategoriesSection categories={categories} />
-      <BannersSection />
-      <BestOffersSection />
-      <RecentProductsSection products={products} />
-      <BestSellersSection products={products} />
+    <Fragment>
+      <div className="md:px-16">
+        <TopCategoriesSection categories={categories} />
+        <BannersSection />
+        <BestOffersSection />
+        <RecentProductsSection products={products} />
+        <BestSellersSection products={products} />
+      </div>
     </Fragment>
   );
 }
