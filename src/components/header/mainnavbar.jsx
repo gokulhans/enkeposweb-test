@@ -4,7 +4,7 @@ import RightIcons from "./RightIcons";
 import Image from "next/image";
 import Link from "next/link";
 
-const MainNavbar = ({ categories }) => {
+const MainNavbar = () => {
   return (
     <div className="container mx-auto md:px-32 py-8 flex items-center justify-between">
       <Link href={"/"}>
@@ -21,7 +21,7 @@ const MainNavbar = ({ categories }) => {
       </Link>
 
       {/* Search bar */}
-      <SearchBar categories={categories} />
+      <SearchBar />
 
       {/* Right side icons */}
       <RightIcons />

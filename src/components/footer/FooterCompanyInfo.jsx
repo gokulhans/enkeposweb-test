@@ -6,7 +6,7 @@ const FooterCompanyInfo = () => {
     <div>
       <div className="flex items-center mb-4">
         <div className="w-8 h-8 bg-white rounded-full mr-2"></div>
-        <h2 className="text-2xl font-bold">GANVIN</h2>
+        <h2 className="text-2xl font-bold">ENKE</h2>
       </div>
       <p className="text-sm mb-4">Make you confident</p>
       <p className="text-sm mb-4">

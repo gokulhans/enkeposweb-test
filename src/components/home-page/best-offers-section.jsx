@@ -32,11 +32,13 @@ const OfferCard = ({
   </div>
 );
 
-const BestOffersSection = () => {
+const BestOffersSection = ({ title }) => {
   return (
-    <div className="container mx-auto px-12 py-8">
-      <h2 className="flex justify-start text-3xl font-bold text-center mb-8">Best Offers</h2> 
-      <div className="flex flex-wrap gap-6 px-16">
+    <div className="container mx-auto px-8 md:px-12 py-8">
+      <h2 className="flex justify-start text-3xl font-bold text-center mb-8">
+        {title}
+      </h2>
+      <div className="flex flex-wrap gap-6 md:px-16">
         <OfferCard
           title="HEALTHY FOOD"
           description="100 ORGANIC"

@@ -10,10 +10,16 @@ const TopBar = () => {
         <a href="#" className="text-gray-600 hover:text-gray-800 border-r pr-2">
           My Account
         </a>
-        <a href="#" className="text-gray-600 hover:text-gray-800  border-r pr-2">
+        <a
+          href="#"
+          className="text-gray-600 hover:text-gray-800  border-r pr-2"
+        >
           About Us
         </a>
-        <a href="#" className="text-gray-600 hover:text-gray-800  border-r pr-2">
+        <a
+          href="#"
+          className="text-gray-600 hover:text-gray-800  border-r pr-2"
+        >
           Contact
         </a>
         <a href="#" className="text-gray-600 hover:text-gray-800 border-r pr-2">

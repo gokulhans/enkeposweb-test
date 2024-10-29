@@ -32,7 +32,7 @@ const BottomMenu = () => {
     >
       <div className="container mx-auto px-4 flex items-center justify-between text-black">
         <div className="flex items-center">
-          <button className="flex items-center space-x-2 bg-blue-500 px-5 py-2 rounded-t">
+          <button className="flex items-center space-x-2 bg-blue-600 px-5 py-2 rounded-t">
             <span className="text-white text-sm font-semibold py-2">
               ALL DEPARTMENT
             </span>
@@ -59,7 +59,7 @@ const BottomMenu = () => {
             </a>
           </div>
         </div>
-        <button className="flex items-center space-x-2 bg-blue-500 px-5 rounded-full">
+        <button className="flex items-center space-x-2 bg-blue-600 px-5 rounded-full">
           <span className="text-white font-semibold py-2 text-sm">
             SUPER STORE
           </span>

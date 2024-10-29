@@ -12,52 +12,53 @@ const placeholderImage4 =
 
 const BannersSection = () => {
   return (
-    <div className="container my-8 mb-16 mx-auto p-4 px-12 h-96">
-      <div className="grid grid-cols-1 md:grid-cols-9 gap-4 h-screen">
+    <div className="container mx-auto p-4 md:px-12">
+      <div className="grid grid-cols-1 md:grid-cols-9 gap-4">
         {/* Left Banner */}
-        <div className="md:col-span-5 relative h-72">
+        <div className="md:col-span-5 relative h-96 sm:h-64 md:h-96">
           <Image
             className="rounded-lg"
             src={placeholderImage}
             alt="Left Banner"
             layout="fill"
             objectFit="cover"
+            priority
           />
         </div>
 
         {/* Middle Banners */}
-        <div className="md:col-span-2 grid grid-rows-2 gap-4 h-96">
-          {/* {[...Array(2)].map((_, index) => ( */}
-          <div className="relative h-48">
+        <div className="col-span-1 md:col-span-2 grid grid-cols-1 gap-4">
+          <div className="relative h-96 sm:h-40 md:h-44">
             <Image
               className="rounded-lg"
               src={placeholderImage2}
-              alt={`Middle Banner `}
+              alt="Middle Banner 1"
               layout="fill"
               objectFit="cover"
             />
           </div>
-          <div className="relative">
+          <div className="relative h-96 sm:h-40 md:h-44">
             <Image
               className="rounded-lg"
               src={placeholderImage3}
-              alt={`Middle Banner`}
+              alt="Middle Banner 2"
               layout="fill"
               objectFit="cover"
             />
           </div>
-          {/* ))} */}
         </div>
 
         {/* Right Banner */}
-        <div className="md:col-span-2 w-64 h-96 relative">
-          <Image
-            className="rounded-lg"
-            src={placeholderImage4}
-            alt="Right Banner"
-            layout="fill"
-            objectFit="cover"
-          />
+        <div className="md:col-span-2 flex items-center justify-center">
+          <div className=" w-64 relative h-96 md:h-96">
+            <Image
+              className="rounded-lg w-full"
+              src={placeholderImage4}
+              alt="Right Banner"
+              layout="fill"
+              objectFit="cover"
+            />
+          </div>
         </div>
       </div>
     </div>

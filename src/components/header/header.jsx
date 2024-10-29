@@ -1,19 +1,16 @@
 import React from "react";
-import { fetchCategories } from "@/app/services/api";
 import TopBar from "./TopBar";
 import MainNavbar from "./MainNavbar";
 import BottomMenu from "./BottomMenu";
 
-const Navbar = async () => {
-  const categories = await fetchCategories();
-
+const Header = async () => {
   return (
     <nav className="bg-white shadow-md">
       <TopBar />
-      <MainNavbar categories={categories} />
+      <MainNavbar />
       <BottomMenu />
     </nav>
   );
 };
 
-export default Navbar;
+export default Header;
