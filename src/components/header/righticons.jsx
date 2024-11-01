@@ -11,10 +11,8 @@ const RightIcons = () => {
     const getCartData = async () => {
       try {
         const cartData = await fetchCartList();
-        // Assuming cartData contains an array of items
-        setCartCount(cartData.data.length); // Update this logic based on your actual data structure
+        setCartCount(cartData.data[0].cart_items.length); // Update this logic based on your actual data structure
         console.log(cartData.data);
-        
       } catch (error) {
         console.error("Failed to fetch cart data:", error);
       }

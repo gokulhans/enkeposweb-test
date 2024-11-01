@@ -201,3 +201,27 @@ export const changePassword = async (
     throw error; // Re-throw the error for handling in the component
   }
 };
+
+export const editPassword = async (
+  confirmPassword
+) => {
+  try {
+    const { data } = await commonRequest({
+      method: "POST",
+      route: "/customer/change-password",
+      body: {},
+      params: {
+        confirm_password: confirmPassword,
+      },
+      config: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${BEARER_TOKEN}`, // Include your Bearer token here
+      },
+    });
+    console.log(data);
+    return data; // Return the response data
+  } catch (error) {
+    console.error("Error changing password:", error);
+    throw error; // Re-throw the error for handling in the component
+  }
+};
