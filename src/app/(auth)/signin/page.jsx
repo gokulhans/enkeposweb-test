@@ -1,20 +1,31 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import showToast from "@/app/utils/toastUtil";
 import { useRouter } from "next/navigation";
+import { customerSignIn } from "@/lib/api";
 
 const SignInPage = () => {
   const router = useRouter(); // Initialize router
+  const [phone, setPhone] = useState("");
+  const [password, setPassword] = useState("");
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    const BearerToken = "7|xaTlZTt7pZwo1tzEAq75gOWthbILbCRWCtatmmJa"; // Replace with your actual token
-    localStorage.setItem("token", BearerToken); // Save the token to local storage
-    showToast("Login Successful", "success"); // Show success message
-    router.push("/");
-    console.log("Token saved to local storage:", BearerToken);
+
+    try {
+      const signinData = { phone, password };
+      const response = await customerSignIn(signinData);
+      const BearerToken = response.access_token; // Assuming the response contains the token
+      localStorage.setItem("token", BearerToken); // Save the token to local storage
+      router.push("/"); // Redirect to home page
+      showToast("Login Successful", "success"); // Show success message
+      console.log("Token saved to local storage:", BearerToken);
+    } catch (error) {
+      showToast("Login failed: " + error.message, "error"); // Handle error gracefully
+      console.error("Login error:", error);
+    }
   };
 
   return (
@@ -70,6 +81,8 @@ const SignInPage = () => {
                         name="mobile"
                         type="tel"
                         required
+                        value={phone}
+                        onChange={(e) => setPhone(e.target.value)}
                         className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
                         placeholder="Enter Your Mobile Number"
                       />
@@ -89,6 +102,8 @@ const SignInPage = () => {
                         name="password"
                         type="password"
                         required
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
                         className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
                         placeholder="Enter Your Password"
                       />

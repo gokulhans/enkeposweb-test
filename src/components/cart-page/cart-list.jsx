@@ -5,9 +5,15 @@ import Image from "next/image";
 import useCart from "@/app/hooks/useCart";
 import { LoadingSpinner } from "../common/LoadingSpinner";
 import ShowErrorMessage from "../common/ShowErrorMessage";
-import { addToCart, decreaseCartItemQuantity, removeCartItem } from "@/lib/api";
+import {
+  addToCart,
+  decreaseCartItemQuantity,
+  removeCart,
+  removeCartItem,
+} from "@/lib/api";
 import showToast from "@/app/utils/toastUtil";
 import Link from "next/link";
+import ShowEmptyMessage from "../common/ShowEmptyMessage";
 
 const CartListSection = () => {
   const { cart, loading, error, refreshCart } = useCart();
@@ -18,6 +24,10 @@ const CartListSection = () => {
 
   if (error) {
     return <ShowErrorMessage error={error} />;
+  }
+
+  if (!cart.length > 0) {
+    return <ShowEmptyMessage messege={"No Products in Cart"} />;
   }
 
   const increaseQuantity = async (productId) => {
@@ -42,6 +52,16 @@ const CartListSection = () => {
     try {
       await removeCartItem(itemId);
       showToast("Item removed from cart", "success");
+      refreshCart();
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const removeAllFromCart = async (itemId) => {
+    try {
+      await removeCart(itemId);
+      showToast("Cart Cleared", "success");
       refreshCart();
     } catch (error) {
       console.error(error);
@@ -199,7 +219,10 @@ const CartListSection = () => {
                 )}
               </div>
 
-              <button className="mt-6 bg-red-50 text-red-600 px-4 md:px-6 py-2 rounded-full text-sm font-medium hover:bg-red-100 transition-colors w-full md:w-auto">
+              <button
+                className="mt-6 bg-red-50 text-red-600 px-4 md:px-6 py-2 rounded-full text-sm font-medium hover:bg-red-100 transition-colors w-full md:w-auto"
+                onClick={() => removeAllFromCart(cart[0].cart_items[0].id)}
+              >
                 REMOVE ALL FROM CART
               </button>
             </div>

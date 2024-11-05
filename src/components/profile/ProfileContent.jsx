@@ -3,9 +3,9 @@ import React from "react";
 import ProfileView from "@/components/profile/sections/ViewProfile";
 import PasswordManagementForm from "@/components/profile/sections/PasswordManagementForm";
 import HelpAndSupport from "@/components/profile/sections/HelpAndSupport";
-import AddressManager from "@/components/profile/sections/AddressManager";
+import AddressManager from "@/components/profile/sections/ManageAddress/AddressManager";
 import NotificationList from "@/components/profile/sections/NotificationList";
-import OrderHistory from "@/components/profile/sections/OrderHistory";
+import OrderHistory from "@/components/profile/sections/OrderHistory/OrderHistory";
 import EditProfile from "./sections/EditProfile";
 
 const ProfileContent = ({ selectedTab }) => {

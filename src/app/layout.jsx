@@ -4,6 +4,7 @@ import Footer from "@/components/footer/footer";
 import MobileHeader from "@/components/header/mobile-header/mobile-header";
 import { Toaster } from "react-hot-toast";
 import Header from "@/components/header/header";
+import { CartProvider } from "@/context/CartContext";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -20,17 +21,19 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className={inter.className}>
-        <div className="hidden sm:block">
-          <Header />
-        </div>
-        <div className="block sm:hidden">
-          <MobileHeader />
-        </div>
-        <main className="flex flex-col  items-center justify-center">
-          <Toaster position="top-right" />
-          {children}
-        </main>
-        <Footer />
+        <CartProvider>
+          <div className="hidden sm:block">
+            <Header />
+          </div>
+          <div className="block sm:hidden">
+            <MobileHeader />
+          </div>
+          <main className="flex flex-col  items-center justify-center">
+            <Toaster position="top-right" />
+            {children}
+          </main>
+          <Footer />
+        </CartProvider>
       </body>
     </html>
   );

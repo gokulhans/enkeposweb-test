@@ -1,25 +1,26 @@
+// RightIcons.js
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { Phone, Heart, ShoppingCart, User } from "lucide-react";
 import Link from "next/link";
 import { fetchCartList } from "@/lib/api";
+import { useCartContext } from "@/context/CartContext"; // import the context
 
 const RightIcons = () => {
-  const [cartCount, setCartCount] = useState(0);
+  const { cartCount, setCartCount } = useCartContext(); // Get cartCount and setCartCount from context
 
   useEffect(() => {
     const getCartData = async () => {
       try {
         const cartData = await fetchCartList();
-        setCartCount(cartData.data[0].cart_items.length); // Update this logic based on your actual data structure
-        console.log(cartData.data);
+        setCartCount(cartData.data[0].cart_items.length); // Set the initial cart count
       } catch (error) {
         console.error("Failed to fetch cart data:", error);
       }
     };
 
     getCartData();
-  }, []);
+  }, [setCartCount]); // Add setCartCount as a dependency
 
   return (
     <div className="flex items-center space-x-4">

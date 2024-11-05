@@ -2,7 +2,7 @@ import axios from "axios";
 
 const BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 // const BEARER_TOKEN = localStorage.getItem("token");
-const BEARER_TOKEN = "7|xaTlZTt7pZwo1tzEAq75gOWthbILbCRWCtatmmJa";
+const BEARER_TOKEN = "22|0KQT8UdMrmGlYVZJR9HsYVA8XlcmmmuZb4PbNifL";
 
 const apiInstance = axios.create({
   baseURL: BASE_URL,
@@ -174,6 +174,27 @@ export const removeCartItem = async (itemId) => {
   }
 };
 
+export const removeCart = async (itemId) => {
+  try {
+    const { data } = await commonRequest({
+      method: "POST", // Assuming DELETE is correct; adjust if necessary
+      route: "/cart/remove-from-cart", // Adjust this route based on your API
+      body: {
+        cart_item_id: itemId,
+        remove_all: "true",
+      },
+      config: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${BEARER_TOKEN}`,
+      },
+    });
+    return data;
+  } catch (error) {
+    console.error("Error removing cart item:", error);
+    throw error; // Re-throw the error for handling in the component
+  }
+};
+
 export const changePassword = async (
   currentPassword,
   newPassword,
@@ -202,26 +223,246 @@ export const changePassword = async (
   }
 };
 
-export const editPassword = async (
-  confirmPassword
-) => {
+export const fetchOrders = async () => {
   try {
-    const { data } = await commonRequest({
-      method: "POST",
-      route: "/customer/change-password",
-      body: {},
+    const response = await commonRequest({
+      method: "GET",
+      route: "/order/list-orders",
+      config: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${BEARER_TOKEN}`,
+      },
+    });
+
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching orders:", error);
+    throw error;
+  }
+};
+
+export const fetchOrderDetails = async ({ orderId = 1 }) => {
+  try {
+    const response = await commonRequest({
+      method: "GET",
+      route: "/order/order-details",
       params: {
-        confirm_password: confirmPassword,
+        order_id: orderId,
       },
       config: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${BEARER_TOKEN}`, // Include your Bearer token here
+        Authorization: `Bearer ${BEARER_TOKEN}`,
       },
     });
-    console.log(data);
-    return data; // Return the response data
+    return response.data;
   } catch (error) {
-    console.error("Error changing password:", error);
+    console.error("Error fetching orders:", error);
+    throw error;
+  }
+};
+
+export const updateProfile = async (profileData = {}) => {
+  const { name, email, gender, pin_code, password, password_confirm } =
+    profileData;
+
+  const params = {
+    name,
+    email,
+    gender,
+    pin_code,
+    password,
+    password_confirm,
+  };
+
+  try {
+    const { data } = await commonRequest({
+      method: "POST",
+      route: "/customer/profile",
+      params: params,
+      body: {},
+      config: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${BEARER_TOKEN}`,
+      },
+    });
+    return data;
+  } catch (error) {
+    throw new Error("Failed to fetch products: " + error.message);
+  }
+};
+
+export const fetchAddresses = async () => {
+  try {
+    const response = await commonRequest({
+      method: "GET",
+      route: "/customer/list-address",
+      config: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${BEARER_TOKEN}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching orders:", error);
+    throw error;
+  }
+};
+
+export const addAddress = async (addressData = {}) => {
+  const {
+    name,
+    address,
+    alt_phone,
+    landmark,
+    pin_code,
+    state_id,
+    district_id,
+    city,
+    address_type,
+  } = addressData;
+
+  const params = {
+    name,
+    address,
+    alt_phone,
+    landmark,
+    pin_code,
+    state_id,
+    district_id,
+    city,
+    address_type,
+  };
+
+  try {
+    const { data } = await commonRequest({
+      method: "POST",
+      route: "/customer/add-address",
+      params: params,
+      body: {},
+      config: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${BEARER_TOKEN}`,
+      },
+    });
+
+    return data;
+  } catch (error) {
+    throw new Error("Failed to add address: " + error.message);
+  }
+};
+
+export const updateAddress = async (addressData = {}) => {
+  const {
+    id,
+    name,
+    address,
+    alt_phone,
+    landmark,
+    pin_code,
+    state_id,
+    district_id,
+    city,
+    address_type,
+  } = addressData;
+
+  const body = {
+    name,
+    address,
+    alt_phone,
+    landmark,
+    pin_code,
+    state_id,
+    district_id,
+    city,
+    address_type,
+  };
+
+  try {
+    const { data } = await commonRequest({
+      method: "POST",
+      route: `/customer/update-address/${id}`,
+      body: body,
+      config: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${BEARER_TOKEN}`,
+      },
+    });
+
+    return data;
+  } catch (error) {
+    throw new Error("Failed to add address: " + error.message);
+  }
+};
+
+export const fetchStates = async () => {
+  const { data } = await commonRequest({
+    method: "GET",
+    route: "/location/get-states",
+    config: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${BEARER_TOKEN}`,
+    },
+  });
+  return data;
+};
+
+export const fetchDistricts = async ({ stateId }) => {
+  const params = {
+    state_id: stateId,
+  };
+  const { data } = await commonRequest({
+    method: "GET",
+    route: "/location/get-district",
+    params,
+    config: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${BEARER_TOKEN}`,
+    },
+  });
+  return data;
+};
+
+export const customerSignIn = async (signinData = {}) => {
+  const { phone, password } = signinData;
+
+  const params = {
+    phone,
+    password,
+  };
+
+  try {
+    const { data } = await commonRequest({
+      method: "POST",
+      route: "/signin",
+      params: params,
+      body: {},
+      config: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${BEARER_TOKEN}`,
+      },
+    });
+    return data;
+  } catch (error) {
+    throw new Error("Failed to add address: " + error.message);
+  }
+};
+
+export const addToOrder = async (customerId = 5) => {
+  try {
+    const { data } = await commonRequest({
+      method: "POST", // Assuming DELETE is correct; adjust if necessary
+      route: "/order/add-to-order", // Adjust this route based on your API
+      body: {
+        customer_id: customerId,
+      },
+      config: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${BEARER_TOKEN}`,
+      },
+    });
+    return data;
+  } catch (error) {
+    console.error("Error removing cart item:", error);
     throw error; // Re-throw the error for handling in the component
   }
 };

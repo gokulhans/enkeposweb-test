@@ -1,8 +1,5 @@
-import React from "react";
-import SignInPage from "../(auth)/signin/page";
+import CheckoutForm from "@/components/checkout/CheckoutForm";
 
-const page = () => {
-  return <SignInPage />;
-};
-
-export default page;
+export default function CheckoutPage() {
+  return <CheckoutForm />;
+}

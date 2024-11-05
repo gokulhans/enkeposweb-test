@@ -1,6 +1,9 @@
-// pages/edit-profile.js
+"use client";
 import { useState } from "react";
 import Image from "next/image";
+import { updateProfile } from "@/lib/api";
+import ShowErrorMessage from "@/components/common/ShowErrorMessage";
+import showToast from "@/app/utils/toastUtil";
 
 export default function EditProfile() {
   const [selectedFile, setSelectedFile] = useState(null);
@@ -10,6 +13,8 @@ export default function EditProfile() {
     alternatePhone: "",
     email: "",
   });
+  const [error, setError] = useState(null);
+  const [successMessage, setSuccessMessage] = useState(null);
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
@@ -27,9 +32,29 @@ export default function EditProfile() {
     setSelectedFile(null);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Handle form submission logic here
+    setError(null);
+    setSuccessMessage(null);
+
+    // Prepare profile data
+    const profileData = {
+      name: formData.fullName,
+      email: formData.email,
+      // Assuming `gender` and `pin_code` are part of your form, you can add them here
+      // gender: formData.gender, // If you have a gender field
+      // pin_code: formData.pin_code, // If you have a pin code field
+      // Password fields if necessary
+      // password: formData.password, // If you have these fields
+      // password_confirm: formData.password_confirm,
+    };
+
+    try {
+      const response = await updateProfile(profileData);
+      showToast("Profile updated successfully!");
+    } catch (error) {
+      setError(error.message);
+    }
   };
 
   return (
@@ -120,6 +145,7 @@ export default function EditProfile() {
           Save
         </button>
       </form>
+      <div className="mt-4">{error && <ShowErrorMessage error={error} />}</div>
     </div>
   );
 }

@@ -3,11 +3,13 @@ import React, { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import showToast from "@/app/utils/toastUtil";
-import { addToCart } from "@/lib/api";
+import { addToCart, fetchCartList } from "@/lib/api";
+import useCart from "@/app/hooks/useCart";
 
 const ProductCardWithWish = ({ product }) => {
   const [quantity, setQuantity] = useState(1);
   const [loading, setLoading] = useState(false);
+  const { refreshCart } = useCart();
 
   const handleAddToCart = async (productId) => {
     setLoading(true); // Set loading state
@@ -17,6 +19,7 @@ const ProductCardWithWish = ({ product }) => {
       if (data.status === "success") {
         setQuantity(1); // Reset quantity after adding to cart
         showToast("Product added to cart", "success");
+        refreshCart();
       } else {
         showToast(data.message, "error");
       }

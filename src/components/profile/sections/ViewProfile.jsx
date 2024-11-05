@@ -3,6 +3,8 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Image from "next/image";
+import ShowErrorMessage from "@/components/common/ShowErrorMessage";
+import { LoadingSpinner } from "@/components/common/LoadingSpinner";
 
 // Make sure to replace this with your actual token retrieval logic
 const BEARER_TOKEN = "17|mBEfJNK7YR180ivZ5v3Ea0mSsVed6TbWKVjfqjez"; // Replace with actual token
@@ -42,11 +44,11 @@ const ProfileView = () => {
   }, []);
 
   if (loading) {
-    return <p>Loading...</p>;
+    return <LoadingSpinner />;
   }
 
   if (error) {
-    return <p>{error}</p>;
+    return <ShowErrorMessage message={error} />;
   }
 
   return (
