@@ -46,7 +46,7 @@ const TopCategoriesSection = () => {
             style={{ scrollBehavior: "smooth" }}
           >
             {categories.map((category) => (
-              <Link href={`/categories/${category.slug}/${category.id}`}>
+              <Link href={`/categories/${category.slug}/${category.id}`} key={category.id}>
                 <div
                   key={category.id}
                   className="flex flex-col items-center shrink-0 w-[160px] md:w-[200px] snap-start"

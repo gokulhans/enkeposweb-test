@@ -1,6 +1,6 @@
 "use client";
 import SearchProducts from "@/components/search/SearchProducts";
-import { Fragment, useEffect, useMemo, useRef } from "react";
+import { Fragment, useMemo, Suspense } from "react"; // Import Suspense
 import { useSearchParams } from "next/navigation"; // Import to retrieve search params
 import useProducts from "../hooks/useProducts";
 import { LoadingSpinner } from "@/components/common/LoadingSpinner";
@@ -9,6 +9,14 @@ import ShowErrorMessage from "@/components/common/ShowErrorMessage";
 import useToastOnLoad from "../hooks/useToastOnLoad";
 
 export default function CategoryProducts() {
+  return (
+    <Suspense fallback={<LoadingSpinner />}>
+      <ProductList />
+    </Suspense>
+  );
+}
+
+function ProductList() {
   const searchParams = useSearchParams(); // Get search params from the URL
   const term = searchParams.get("term");
   const category = searchParams.get("category");
@@ -25,13 +33,12 @@ export default function CategoryProducts() {
   );
 
   const { products, loading, error } = useProducts(filters);
-
   useToastOnLoad(loading, products, `${products.length} Products found!`);
 
   if (loading) return <LoadingSpinner />;
   if (error) return <ShowErrorMessage error={error} />;
   if (products.length === 0)
-    return <ShowEmptyMessage messege={"No products found"} />;
+    return <ShowEmptyMessage message={"No products found"} />;
 
   return (
     <Fragment>

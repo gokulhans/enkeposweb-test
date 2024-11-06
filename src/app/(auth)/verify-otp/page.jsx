@@ -87,7 +87,7 @@ const SignUpPage = () => {
                     </div>
                     <div className="relative flex justify-center text-sm">
                       <span className="px-2 bg-white text-gray-500">
-                        Didn't receive code ? &nbsp;
+                        Didn&apos;t receive code ? &nbsp;
                         <Link
                           href={"/signin"}
                           className="font-medium text-blue-600 hover:text-blue-500 hover:underline"
