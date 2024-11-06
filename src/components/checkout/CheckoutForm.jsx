@@ -1,33 +1,111 @@
 "use client";
 import useCart from "@/app/hooks/useCart";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { LoadingSpinner } from "../common/LoadingSpinner";
 import ShowErrorMessage from "../common/ShowErrorMessage";
-import { addToOrder } from "@/lib/api";
+import { addToOrder, addAddress, fetchDistricts, fetchStates } from "@/lib/api"; // Import necessary functions
 import { useRouter } from "next/navigation";
 import showToast from "@/app/utils/toastUtil";
+import useAddresses from "@/app/hooks/useAddresses";
 
 const CheckoutForm = () => {
   const router = useRouter();
-  const { cart, loading, error } = useCart(); // Fetch the cart data using the custom hook
+  const { cart, loading, error, refreshCart } = useCart(); // Fetch the cart data using the custom hook
+  const { addresses } = useAddresses();
+
   const [formData, setFormData] = useState({
-    name: "",
+    fullName: "",
     landmark: "",
     address: "",
     city: "",
-    postcode: "",
+    pincode: "",
     state: "",
     district: "",
     phone: "",
-    addressType: "",
+    addressType: "Home", // Default address type
     createAccount: false,
     differentShipping: false,
     orderNotes: "",
   });
 
+  const [states, setStates] = useState([]);
+  const [districts, setDistricts] = useState([]);
+  const [loadingStates, setLoadingStates] = useState(false);
+  const [loadingDistricts, setLoadingDistricts] = useState(false);
+
+  useEffect(() => {
+    const loadStates = async () => {
+      setLoadingStates(true);
+      try {
+        const data = await fetchStates();
+        setStates(
+          Object.entries(data.data).map(([id, name]) => ({ id, name }))
+        );
+      } catch (error) {
+        console.error("Error fetching states:", error);
+      } finally {
+        setLoadingStates(false);
+      }
+    };
+
+    loadStates();
+  }, []);
+
+  const handleStateChange = async (e) => {
+    const selectedStateId = e.target.value;
+    setFormData((prev) => ({ ...prev, state: selectedStateId, district: "" }));
+    if (selectedStateId) {
+      setLoadingDistricts(true);
+      try {
+        const data = await fetchDistricts({ stateId: selectedStateId });
+        setDistricts(
+          Object.entries(data.data).map(([id, name]) => ({ id, name }))
+        );
+      } catch (error) {
+        console.error("Error fetching districts:", error);
+      } finally {
+        setLoadingDistricts(false);
+      }
+    } else {
+      setDistricts([]);
+    }
+  };
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const addressData = {
+      name: formData.fullName,
+      address: formData.address,
+      alt_phone: formData.phone,
+      pin_code: formData.pincode,
+      state_id: formData.state,
+      district_id: formData.district,
+      city: formData.city,
+      landmark: formData.landmark,
+      address_type: formData.addressType,
+    };
+
+    try {
+      await addAddress(addressData);
+      showToast("Address added successfully!");
+    } catch (error) {
+      showToast("Error adding address: " + error.message);
+      console.error("Error adding address:", error.message);
+    }
+  };
+
   const placeOrder = async () => {
     try {
       await addToOrder();
+      await refreshCart();
       showToast("Order placed successfully");
       router.push("/");
     } catch (error) {
@@ -36,7 +114,7 @@ const CheckoutForm = () => {
   };
 
   if (loading) return <LoadingSpinner />;
-  if (error) return <ShowErrorMessage error={error.messege} />;
+  if (error) return <ShowErrorMessage error={error.message} />;
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-8">
@@ -44,100 +122,178 @@ const CheckoutForm = () => {
         {/* Left Column - Billing Details */}
         <div className="w-full md:w-2/3">
           <h2 className="text-2xl font-semibold mb-6">Billing Details</h2>
-          <form className="space-y-4">
+          <form onSubmit={handleSubmit} className="space-y-4">
+            {/* Full Name */}
             <div>
               <label className="block text-sm mb-1">
                 Name <span className="text-red-500">*</span>
               </label>
               <input
                 type="text"
+                name="fullName"
                 className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                 placeholder="Name"
+                value={formData.fullName}
+                onChange={handleInputChange}
+                required
               />
             </div>
 
+            {/* Landmark */}
             <div>
               <label className="block text-sm mb-1">
                 Landmark <span className="text-red-500">*</span>
               </label>
               <input
                 type="text"
+                name="landmark"
                 className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                 placeholder="Landmark"
+                value={formData.landmark}
+                onChange={handleInputChange}
+                required
               />
             </div>
 
+            {/* Address */}
             <div>
               <label className="block text-sm mb-1">
                 Street address <span className="text-red-500">*</span>
               </label>
               <input
                 type="text"
+                name="address"
                 className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                 placeholder="House number and street name"
+                value={formData.address}
+                onChange={handleInputChange}
+                required
               />
             </div>
 
+            {/* City */}
             <div>
               <label className="block text-sm mb-1">
                 City <span className="text-red-500">*</span>
               </label>
               <input
                 type="text"
+                name="city"
                 className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                 placeholder="City"
+                value={formData.city}
+                onChange={handleInputChange}
+                required
               />
             </div>
 
+            {/* Pincode */}
             <div>
               <label className="block text-sm mb-1">
-                Postcode/ ZIP (optional)
+                Postcode/ ZIP <span className="text-red-500">*</span>
               </label>
               <input
                 type="text"
+                name="pincode"
                 className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                 placeholder="Postcode / ZIP code"
+                value={formData.pincode}
+                onChange={handleInputChange}
+                required
               />
             </div>
 
+            {/* State */}
             <div>
               <label className="block text-sm mb-1">
                 State <span className="text-red-500">*</span>
               </label>
-              <select className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white">
+              <select
+                name="state"
+                value={formData.state}
+                onChange={handleStateChange}
+                className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                disabled={loadingStates}
+                required
+              >
                 <option value="">Select state</option>
+                {loadingStates ? (
+                  <option value="" disabled>
+                    Loading...
+                  </option>
+                ) : (
+                  states.map((state) => (
+                    <option key={state.id} value={state.id}>
+                      {state.name}
+                    </option>
+                  ))
+                )}
               </select>
             </div>
 
+            {/* District */}
             <div>
               <label className="block text-sm mb-1">
                 District <span className="text-red-500">*</span>
               </label>
-              <select className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white">
+              <select
+                name="district"
+                value={formData.district}
+                onChange={handleInputChange}
+                className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                disabled={loadingDistricts}
+                required
+              >
                 <option value="">Select district</option>
+                {loadingDistricts ? (
+                  <option value="" disabled>
+                    Loading...
+                  </option>
+                ) : (
+                  districts.map((district) => (
+                    <option key={district.id} value={district.id}>
+                      {district.name}
+                    </option>
+                  ))
+                )}
               </select>
             </div>
 
+            {/* Phone */}
             <div>
               <label className="block text-sm mb-1">
                 Phone <span className="text-red-500">*</span>
               </label>
               <input
                 type="tel"
+                name="phone"
                 className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                 placeholder="Phone"
+                value={formData.phone}
+                onChange={handleInputChange}
+                required
               />
             </div>
 
+            {/* Address Type */}
             <div>
               <label className="block text-sm mb-1">
                 Address type <span className="text-red-500">*</span>
               </label>
-              <select className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white">
-                <option value="">Select a address type</option>
+              <select
+                name="addressType"
+                value={formData.addressType}
+                onChange={handleInputChange}
+                className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                required
+              >
+                <option value="Home">Home</option>
+                <option value="Office">Office</option>
+                <option value="Other">Other</option>
               </select>
             </div>
 
+            {/* Action Buttons */}
             <div className="space-x-4">
               <button
                 type="submit"
@@ -148,10 +304,41 @@ const CheckoutForm = () => {
               <button
                 type="button"
                 className="px-6 py-2 bg-gray-500 text-white rounded-md hover:bg-gray-600"
+                onClick={() => router.push("/")}
               >
                 CANCEL
               </button>
             </div>
+
+            {/* Address List */}
+
+            <h2 className="text-xl font-semibold text-gray-800 mb-4">
+              Select Address
+            </h2>
+            {addresses.length === 0 ? (
+              <p className="text-gray-500">No addresses added yet.</p>
+            ) : (
+              <div className="space-y-4">
+                {addresses.map((address) => (
+                  <div
+                    key={address.id}
+                    className="border border-gray-200 rounded-lg p-4 hover:border-blue-500 cursor-pointer transition-colors"
+                  >
+                    <div className="flex justify-between">
+                      <button className="text-white text-sm bg-blue-600 px-3 mb-2 py-2 rounded-lg">
+                        {address.address_type}
+                      </button>
+                      <input type="radio" name="address" value={address.id} />
+                    </div>
+                    <p className="font-medium text-gray-800">{address.name}</p>
+                    <p className="text-gray-600">
+                      {address.address}, {address.city}, {address.state_id}{" "}
+                      {address.pin_code}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            )}
 
             {/* New Account and Shipping Options */}
             <div className="space-y-4 pt-4 border-t">
@@ -262,7 +449,6 @@ const CheckoutForm = () => {
               <div className="flex justify-between font-semibold">
                 <div>Total</div>
                 <div className="text-green-600">
-                  {" "}
                   ₹
                   {cart
                     .reduce(
@@ -273,19 +459,6 @@ const CheckoutForm = () => {
                 </div>
               </div>
             </div>
-            {/* 
-            <div className="mt-6">
-              <div className="flex">
-                <input
-                  type="text"
-                  className="flex-1 px-4 py-2 border rounded-l-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  placeholder="Enter Coupon Code..."
-                />
-                <button className="px-4 py-2 bg-blue-500 text-white rounded-r-md hover:bg-blue-600">
-                  APPLY COUPON
-                </button>
-              </div>
-            </div> */}
 
             <div className="mt-6">
               <div className="flex items-center gap-2 mb-4">
@@ -300,9 +473,9 @@ const CheckoutForm = () => {
               </div>
               <button
                 className="w-full px-6 py-3 bg-blue-500 text-white rounded-md hover:bg-blue-600"
-                onClick={() => placeOrder()}
+                onClick={placeOrder}
               >
-                Place an order
+                Place Order
               </button>
             </div>
 

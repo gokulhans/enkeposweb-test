@@ -1,7 +1,11 @@
 import axios from "axios";
 
 const BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
-// const BEARER_TOKEN = localStorage.getItem("token");
+// Check if we are in the browser environment
+// let BEARER_TOKEN;
+// if (typeof window !== "undefined") {
+//   BEARER_TOKEN = localStorage.getItem("token");
+// }
 const BEARER_TOKEN = "22|0KQT8UdMrmGlYVZJR9HsYVA8XlcmmmuZb4PbNifL";
 
 const apiInstance = axios.create({
@@ -101,6 +105,7 @@ export const addToCart = async (productId, quantity, customerId = 5) => {
       },
       config: {
         "Content-Type": "application/json",
+        "X-Requested-With": "XMLHttpRequest",
         Authorization: `Bearer ${BEARER_TOKEN}`,
       },
     });

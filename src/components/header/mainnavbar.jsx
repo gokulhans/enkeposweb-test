@@ -1,6 +1,6 @@
 import React from "react";
-import SearchBar from "./SearchBar";
-import RightIcons from "./RightIcons";
+import SearchBar from "./searchbar";
+import RightIcons from "./righticons";
 import Image from "next/image";
 import Link from "next/link";
 

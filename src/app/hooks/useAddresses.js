@@ -6,21 +6,22 @@ const useAddresses = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  const loadAddresses = async () => {
+    try {
+      const data = await fetchAddresses();
+      setAddresses(data.data);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
-    const loadAddresses = async () => {
-      try {
-        const data = await fetchAddresses();
-        setAddresses(data.data);
-      } catch (err) {
-        setError(err.message);
-      } finally {
-        setLoading(false);
-      }
-    };
     loadAddresses();
   }, []);
 
-  return { addresses, loading, error, refetchAddresses: fetchAddresses };
+  return { addresses, loading, error, refetchAddresses: loadAddresses };
 };
 
 export default useAddresses;
